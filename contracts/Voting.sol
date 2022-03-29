@@ -123,14 +123,15 @@ contract Voting is ERC20Basic {
         uint voteCountD;
     }
 
-
+    //Time will Start as soon as Function is Called
     function startTimer (uint _minute) public onlyOwner {
         require (_optionsadded == true, "Add the Options First");
         uint _seconds = _minute * 60;
         deadline=block.timestamp + _seconds;
         _timerstarted = true;
     }
-
+    
+    //Add Options for MCQs
     function addOptions(address userId, string _optionA, string _optionB, string _optionC, string _optionD) public onlyOwner{
         require(_timerstarted == false, "Timer has Already Started You cannot Change Option Now");
         options[userId] = option(userId, _optionA, _optionB, _optionC, _optionD);
