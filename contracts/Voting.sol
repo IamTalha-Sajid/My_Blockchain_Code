@@ -18,14 +18,7 @@ contract Voting {
     IERC721 public NFT;
     address[] voters;
     uint[4] voteCount;
-
-    struct option {
-        address userId;
-        string optionA;
-        string optionB;
-        string optionC;
-        string optionD;
-    }
+    string[4] options;
 
     struct vote{
         address userId;
@@ -37,7 +30,6 @@ contract Voting {
     uint public deadline;
     bool public _timerstarted = false;
     bool public _optionsadded = false;
-    mapping(address => option) options;
     mapping(address => vote) votes;
 
     constructor() {
@@ -58,20 +50,22 @@ contract Voting {
         _timerstarted = true;
     }
 
-    function addOptions(address userId, string memory _optionA, string memory _optionB, string memory _optionC, string memory _optionD) public onlyOwner{
+    function addOptions(string memory _optionA, string memory _optionB, string memory _optionC, string memory _optionD) public onlyOwner{
         require(_timerstarted == false, "Timer has Already Started You cannot Change Option Now");
-        options[userId] = option(userId, _optionA, _optionB, _optionC, _optionD);
+        options[0] = _optionA;
+        options[1] = _optionB;
+        options[2] = _optionC;
+        options[3] = _optionD;
         _optionsadded = true;
     }
 
     function getOptions() public view returns (string memory, string memory, string memory, string memory){
         require(_optionsadded == true, "Options are Not Added Yet");
-        address userId = owner;
         return (
-        options[userId].optionA,
-        options[userId].optionB,
-        options[userId].optionC,
-        options[userId].optionD
+        options[0],
+        options[1],
+        options[2],
+        options[3]
         );
     }
 
