@@ -17,6 +17,7 @@ contract Voting {
     IERC20 public token;
     IERC721 public NFT;
     address[] voters;
+    uint[4] voteCount;
 
     struct option {
         address userId;
@@ -28,7 +29,7 @@ contract Voting {
 
     struct vote{
         address userId;
-        string option;
+        uint option;
         bool hasVoted;
     }
 
@@ -74,62 +75,46 @@ contract Voting {
         );
     }
 
-    uint voteCountA = 0;
-    uint voteCountB = 0;
-    uint voteCountC = 0;
-    uint voteCountD = 0;
-
-    function castVote(address _userId, string memory _option) public {
+    function castVote(address _userId, uint _option) public {
         require(_optionsadded == true, "Options are Not Added Yet");
         require( token.balanceOf(_userId) >= 20, "Token Balance is Less than 20");
         require(_timerstarted == true, "Voting Time haven't Started Yet");
         require(votes[_userId].hasVoted == false, "You Have Already Voted");
-        if (keccak256(abi.encodePacked(_option)) == keccak256(abi.encodePacked("A"))){
+        if (_option == 1){
             votes[_userId].hasVoted = true;
-            voteCountA++;    
+            voteCount[0]++;    
         }
-        else if  (keccak256(abi.encodePacked(_option)) == keccak256(abi.encodePacked("B"))){
+        else if  (_option == 2){
             votes[_userId].hasVoted = true;
-            voteCountB++;   
+            voteCount[1]++;   
         }
-        else if (keccak256(abi.encodePacked(_option)) == keccak256(abi.encodePacked("C"))){
+        else if (_option == 3){
             votes[_userId].hasVoted = true;
-            voteCountC++;
+            voteCount[2]++; 
         }
-        else if (keccak256(abi.encodePacked(_option)) == keccak256(abi.encodePacked("D"))){
+        else if (_option == 4){
             votes[_userId].hasVoted = true;
-            voteCountD++;
+            voteCount[3]++; 
         }
         votes[_userId] = vote(_userId, _option, true);
         token.voted(_userId);
         voters.push(_userId);
     }
 
-    string winningOption;
+    uint winningOption;
     function checkWinner() public {
         require(block.timestamp > deadline, "Voting Still in Progress");
-        if (voteCountA > voteCountB){
-            if (voteCountA > voteCountC){
-                if (voteCountA > voteCountD){
-                    winningOption = "A";
-                }
-                else{
-                    winningOption = "D";
-                }
-            }
-        }
-        else if (voteCountB > voteCountC){
-            if (voteCountB > voteCountD){
-                winningOption = "B";
-            }
-            else {
-                winningOption = "C";
+        uint largest = 0;
+        for (uint i = 0; i < 3; i++) {
+            if (voteCount[i] > largest) {
+                largest = voteCount[i];
+                winningOption = i+1;
             }
         }
     }
 
     function checkResult() public view onlyOwner returns (uint, uint, uint, uint){
-        return(voteCountA, voteCountB, voteCountC, voteCountD);
+        return(voteCount[0], voteCount[1], voteCount[2], voteCount[3]);
     }
 
     function claimReward(address _userId) public returns (string memory){
