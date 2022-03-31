@@ -103,7 +103,7 @@ contract Voting {
     function checkWinner() public {
         require(block.timestamp > deadline, "Voting Still in Progress");
         uint largest = 0;
-        for (uint i = 0; i < 3; i++) {
+        for (uint i = 0; i <= 3; i++) {
             if (voteCount[i] > largest) {
                 largest = voteCount[i];
                 winningOption = i+1;
