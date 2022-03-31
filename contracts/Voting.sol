@@ -81,27 +81,25 @@ contract Voting {
         require(_timerstarted == true, "Voting Time haven't Started Yet");
         require(votes[_userId].hasVoted == false, "You Have Already Voted");
         if (_option == 1){
-            votes[_userId].hasVoted = true;
             voteCount[0]++;    
         }
         else if  (_option == 2){
-            votes[_userId].hasVoted = true;
             voteCount[1]++;   
         }
         else if (_option == 3){
-            votes[_userId].hasVoted = true;
             voteCount[2]++; 
         }
         else if (_option == 4){
-            votes[_userId].hasVoted = true;
             voteCount[3]++; 
         }
+        votes[_userId].hasVoted = true;
         votes[_userId] = vote(_userId, _option, true);
         token.voted(_userId);
         voters.push(_userId);
     }
 
     uint winningOption;
+    
     function checkWinner() public {
         require(block.timestamp > deadline, "Voting Still in Progress");
         uint largest = 0;
@@ -119,7 +117,7 @@ contract Voting {
 
     function claimReward(address _userId) public returns (string memory){
         require(block.timestamp > deadline, "Voting Still in Progress");
-            if (keccak256(abi.encodePacked(votes[_userId].option)) == keccak256(abi.encodePacked(winningOption))){
+            if (votes[_userId].option == winningOption){
                 token.mintReward(_userId);
                 token.reward(_userId);
                 NFT.mintNFT(_userId);
