@@ -45,8 +45,7 @@ contract Staking {
     }
 
     function removeStake (address _userId, uint _amount) public returns (bool){
-        require (_amount <= stakes[_userId].amount, "You cannot UnStake more than you have Staked");
-        token.mint(_userId, _amount);
+        token.mint(_userId, stakes[_userId].amount);
         stakes[_userId].totaltime = ((block.timestamp - stakes[_userId]._stakingtime) / 60);
         stakes[_userId].amount = stakes[_userId].amount - _amount;
         stakes[_userId].staked = false;
