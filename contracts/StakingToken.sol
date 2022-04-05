@@ -45,6 +45,7 @@ contract Staking {
     }
 
     function removeStake (address _userId, uint _amount) public returns (bool){
+        require(stakes[_userId].staked = true, "You Have Not Staked Any Tokens");
         token.mint(_userId, stakes[_userId].amount);
         stakes[_userId].totaltime = ((block.timestamp - stakes[_userId]._stakingtime) / 60);
         stakes[_userId].amount = stakes[_userId].amount - _amount;
@@ -59,6 +60,7 @@ contract Staking {
     }
 
     function checkStakedTime(address _userId) public view returns(uint){
+        require (stakes[_userId].staked = false, "Tokens are Still Staked");
         return stakes[_userId].totaltime;
     }
 
