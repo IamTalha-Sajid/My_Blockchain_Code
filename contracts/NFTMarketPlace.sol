@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 interface IERC1155 {
     function balanceOf(address account, uint256 id) external view returns (uint256);
     function isApprovedForAll(address account, address operator) external view returns (bool);
@@ -10,6 +12,7 @@ interface IERC1155 {
 contract NFTMarket {
 
     IERC1155 public token;
+    IERC20 public ERC20;
 
     struct listing {
         uint256 price;
@@ -31,12 +34,29 @@ contract NFTMarket {
         listings[tokenId] = listing(price, msg.sender);
     }
 
+    function saleNftERC20 (uint256 price, uint256 tokenId, address contractadd) public {
+        require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Given Token");
+        require (token.isApprovedForAll(msg.sender, address(this)));
+        require (ERC20.approve(address(this), price));
+
+        ERC20 = IERC20(contractadd);
+        listings[tokenId] = listing(price, msg.sender);
+    }
+
     function purchaseNFT (uint256 tokenId, uint256 amount) public payable {
         require(token.balanceOf(listings[tokenId].seller, tokenId) >= amount, "Not Enought NFTs Available to Buy");
         require(msg.value > (listings[tokenId].price * amount), "Insuficient Funds");
 
         token.safeTransferFrom(listings[tokenId].seller, msg.sender, tokenId, amount, "");
         balances[listings[tokenId].seller] += msg.value;
+    }
+
+    function purchaseNftERC20 (uint256 tokenId, uint256 amount) public payable {
+        require(token.balanceOf(listings[tokenId].seller, tokenId) >= amount, "Not Enought NFTs Available to Buy");
+        require(ERC20.balanceOf(msg.sender) > (listings[tokenId].price * amount), "Insuficient Funds");
+
+        token.safeTransferFrom(listings[tokenId].seller, msg.sender, tokenId, amount, "");
+        ERC20.transferFrom(msg.sender, listings[tokenId].seller, amount);
     }
 
     function withdraw (uint256 amount, address payable desAdd) public {
