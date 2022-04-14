@@ -19,13 +19,26 @@ contract NFTMarket {
         address seller;
     }
 
-    constructor() {
-        token = IERC1155(0xd9145CCE52D386f254917e481eB44e9943F39138);
+    struct rent {
+        uint256 price;
+        address seller;
+        uint256 maxTime;
+        uint256 totalPrice;
     }
 
-    // mapping(address => mapping(uint => listing)) public listings;
+    struct rented {
+        uint256 tokenId;
+        uint256 returntime;
+    }
+
+    constructor() {
+        token = IERC1155(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8);
+    }
+
     mapping(uint256 => listing) public listings;
+    mapping(uint256 => rent) public rentlistings;
     mapping(address => uint256) public balances;
+    mapping(address => rented) public rentedNFTs;
 
     function saleNFT (uint256 price, uint256 tokenId) public {
         require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Given Token");
@@ -45,7 +58,7 @@ contract NFTMarket {
 
     function purchaseNFT (uint256 tokenId, uint256 amount) public payable {
         require(token.balanceOf(listings[tokenId].seller, tokenId) >= amount, "Not Enought NFTs Available to Buy");
-        require(msg.value > (listings[tokenId].price * amount), "Insuficient Funds");
+        require(msg.value >= (listings[tokenId].price * amount), "Insuficient Funds");
 
         token.safeTransferFrom(listings[tokenId].seller, msg.sender, tokenId, amount, "");
         balances[listings[tokenId].seller] += msg.value;
@@ -64,5 +77,29 @@ contract NFTMarket {
 
         desAdd.transfer(amount);
         balances[msg.sender] -= amount;
+    }
+
+    function rentNFT(uint256 _tokenId, uint256 maxtime, uint256 _amount, uint256 totalprice, uint256 unitprice) public payable {
+        require (token.isApprovedForAll(msg.sender, address(this)));
+        require (token.balanceOf(msg.sender, _tokenId) > 0, "You Dont Own the Given Token");
+
+        rentlistings[_tokenId] = rent(unitprice, msg.sender, maxtime, totalprice);
+        token.safeTransferFrom(msg.sender, address(this), _tokenId, _amount, "0x00");
+    }
+
+    function borrowNFT(uint256 _tokenId, uint256 _amount, uint256 time) public payable {
+        require(token.balanceOf(rentlistings[_tokenId].seller, _tokenId) >= _amount, "Not Enought NFTs Available to Buy");
+        require(msg.value >= ((rentlistings[_tokenId].price * _amount) * time), "Insuficient Funds");
+        require(rentlistings[_tokenId].maxTime >= time, "NFTs Not Available to Buy for this Time Peiod");
+
+        balances[rentlistings[_tokenId].seller] += msg.value;
+        token.safeTransferFrom(address(this), msg.sender, _tokenId, _amount, "0x00");
+        uint256 returntime = block.timestamp + time;
+        rentedNFTs[msg.sender] = rented(_tokenId, returntime);
+    }
+
+    function returnNFT(uint256 _tokenId, uint256 _amount) public {
+        require(token.balanceOf(msg.sender, _tokenId) >= _amount, "Not Enought NFTs Available to Buy")
+        token.safeTransferFrom(msg.sender, address(this), _tokenId, _amount, "0x00");
     }
 }
