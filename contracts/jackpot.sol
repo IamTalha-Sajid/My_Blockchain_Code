@@ -37,7 +37,7 @@ contract jackpot {
         return true;
     }
 
-    function depositFunds (address payable walletAddress, uint256 amount) public payable {
+    function depositFunds (uint256 amount) public payable {
         require (msg.value >= amount, "Insuficient Funds");
         require (msg.sender != owner, "Admin Cannot Participate");
         require (jackpotIsActivated == true, "Jackpot Not Started Yet");
