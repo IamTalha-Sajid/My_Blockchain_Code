@@ -54,7 +54,7 @@ contract jackpot {
         users.push(msg.sender);
     }
 
-    function pickWinner() public onlyOwner {
+    function pickWinner() public onlyOwner returns (address){
         require (block.timestamp >= endingTime, "Jackpot Still in Progress");
         require (jackpotIsActivated == true, "Jackpot Not Started Yet");
         require (pickedWinner == false, "Winner Already Selected");
@@ -67,9 +67,8 @@ contract jackpot {
         winner = users[winningOption];
         balances[winner] += totalFunds;
 
-        for(uint i = 0; i<= users.length; i++){
-            users.pop();
-        }
+        return (winner);
+
     }
 
     function withdraw (uint256 amount, address payable desAdd) public {
