@@ -12,6 +12,7 @@ contract jackpot {
     uint256 endingTime;
     uint256 second;
     address winner;
+    bool pickedWinner = false;
 
     constructor () {
         owner = msg.sender;
@@ -28,6 +29,7 @@ contract jackpot {
 
     function startJackpot (uint256 _time) public onlyOwner {
         jackpotIsActivated = true;
+        pickedWinner = false;
         second = _time * 60;
         endingTime = block.timestamp + second;
     }
@@ -55,10 +57,12 @@ contract jackpot {
     function pickWinner() public onlyOwner {
         require (block.timestamp >= endingTime, "Jackpot Still in Progress");
         require (jackpotIsActivated == true, "Jackpot Not Started Yet");
+        require (pickedWinner == false, "Winner Already Selected");
 
         uint256 winningOption;
 
         jackpotIsActivated = false;
+        pickedWinner = true;
         winningOption = rand();
         winner = users[winningOption];
         balances[winner] += totalFunds;
