@@ -62,6 +62,10 @@ contract jackpot {
         winningOption = rand();
         winner = users[winningOption];
         balances[winner] += totalFunds;
+
+        for(uint i = 0; i<= users.length; i++){
+            users.pop();
+        }
     }
 
     function withdraw (uint256 amount, address payable desAdd) public {
