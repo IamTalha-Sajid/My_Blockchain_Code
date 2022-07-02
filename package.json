@@ -1,28 +1,21 @@
 {
-  "name": "My_Blockchain_Code",
-  "version": "1.0.0",
-  "description": "All of my Smart contracts are here",
-  "main": "Test.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IamTalha-Sajid/My_Blockchain_Code.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/IamTalha-Sajid/My_Blockchain_Code/issues"
-  },
-  "homepage": "https://github.com/IamTalha-Sajid/My_Blockchain_Code#readme",
+  "name": "hardhat-project",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.9",
-    "hardhat": "^2.9.9"
+    "ethers": "^5.6.4",
+    "hardhat": "^2.9.3"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.0.4",
+    "@openzeppelin/contracts": "^4.5.0",
+    "@openzeppelin/contracts-upgradeable": "^4.6.0",
+    "dotenv": "^16.0.0",
+    "hardhat-contract-sizer": "^2.5.1",
+    "hardhat-etherscan-abi": "github:usmansharif525/hardhat-etherscan-abi",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.7.21"
   }
 }
