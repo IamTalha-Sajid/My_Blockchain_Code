@@ -22,9 +22,10 @@ contract kycVerification {
 
     mapping (address => Bank) banks; // mapping unique address to bank
 
-    function addNewBankbyRBI (string memory _bankName, address _bankAddress) public onlyOwner {
+    function addNewBankbyRBI (string memory _bankName, address _bankAddress) public onlyOwner returns (bool) {
         banks[_bankAddress].bankName=_bankName;
         banks[_bankAddress].bankAddress=_bankAddress;
+        return true;
     }
     
     function blockBankFromAddingCustomer (address _bankAddress) public onlyOwner{
@@ -68,10 +69,11 @@ contract kycVerification {
     mapping(uint256 => Customer) customers;
     uint256 customerCount = 0;
 
-    function addNewCustomerbyBank (string memory _bankName, address _bankAddress, uint32 _customerID, uint64 _aadhaarNumber, string memory _customerName) public{
+    function addNewCustomerbyBank (string memory _bankName, address _bankAddress, uint32 _customerID, uint64 _aadhaarNumber, string memory _customerName) public returns (bool){
         require(banks[_bankAddress].blocked==false, "You do not Have the Permission to Add Customer");
         customers[_customerID] = Customer(_bankName, _bankAddress, _customerID, _aadhaarNumber, _customerName);
         customerCount++;
+        return true;
     }
 
     function queryCustomerByID(uint64 _customerID) public view returns ( string memory _customerName, string memory _bankName, uint64 _aadhaarNumber, address _bankAddress ){
