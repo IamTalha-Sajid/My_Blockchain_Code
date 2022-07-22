@@ -99,11 +99,11 @@ contract NFTMarket {
     }
 
     function returnNFT(uint256 _tokenId, uint256 _amount) public {
-        require(token.balanceOf(msg.sender, _tokenId) >= _amount, "Not Enought NFTs Available to Buy")
+        require(token.balanceOf(msg.sender, _tokenId) >= _amount, "Not Enought NFTs Available to Buy");
         token.safeTransferFrom(msg.sender, address(this), _tokenId, _amount, "0x00");
     }
 
-    function onERC1155Received(address operator, address from, uint256 id, uint256 value, bytes calldata data) external returns (bytes4) {
+    function onERC1155Received(address operator, address from, uint256 id, uint256 value, bytes calldata data) external pure returns (bytes4) {
         return bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"));
     }
 }
