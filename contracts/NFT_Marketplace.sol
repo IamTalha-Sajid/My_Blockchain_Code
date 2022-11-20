@@ -70,7 +70,6 @@ contract NFTMarket is Ownable{
     function unlistNftFixPrice (address _token, uint256 _tokenId) public {
         require(_token != address(0), "Token address cannot be 0");
         require (IERC721(_token).ownerOf(_tokenId) == msg.sender, "You Dont Own the Given Token");
-
         delete listingFixPrices[_token][_tokenId];
         delete royalties[_token][_tokenId];
         emit tokenUnlistedFixPrice(msg.sender, _tokenId);
@@ -88,13 +87,11 @@ contract NFTMarket is Ownable{
         royalties[_token][_tokenId].creator.transfer(royaltyToPay);
         ownerFeesAccount.transfer(feesToPayOwner);
         unlistNftFixPrice(_token, _tokenId);
-
         emit nftBoughtFixPrice(msg.sender, _tokenId, msg.value);
     }
 
     function withdraw (uint256 amount, address payable desAdd) public {
         require (balanceOf[msg.sender] >= amount, "Insuficient Funds");
-
         desAdd.transfer(amount);
         balanceOf[msg.sender] -= amount;
     }
