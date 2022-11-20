@@ -39,14 +39,7 @@ module.exports = {
     overrides: {},
   },
   networks: {
-    hardhat: {
-      allowUnlimitedContractSize: true,
-      forking: {
-        url: process.env.ALCHEMY_URL,
-        blockNumber: 12545000,
-      },
-      gasPrice: 10000000000000
-    },
+    hardhat: {},
     ropsten: {
       url:
         process.env.NETWORK_RPC_URL !== undefined ? process.env.NETWORK_RPC_URL : "",
