@@ -9,11 +9,11 @@
     "hardhat": "^2.9.3"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-etherscan": "^3.0.4",
-    "@openzeppelin/contracts": "^4.5.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
-    "dotenv": "^16.0.0",
-    "hardhat-contract-sizer": "^2.5.1",
+    "dotenv": "^16.0.1",
+    "hardhat-contract-sizer": "^2.6.1",
     "hardhat-etherscan-abi": "github:usmansharif525/hardhat-etherscan-abi",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.7.21"
