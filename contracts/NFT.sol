@@ -12,7 +12,7 @@ contract PowerUp is ERC721, ERC721URIStorage, Ownable {
     Counters.Counter private _tokenIdCounter;
     mapping (address => uint) private _powerUps;
 
-    constructor() ERC721("PowerUp", "PWR") {}
+    constructor() ERC721("MyNFTs", "NFT") {}
 
     function safeMint(address to, string memory uri) public payable{
         require(_powerUps[msg.sender] <= 5, "You can only mint upto 5 times");
