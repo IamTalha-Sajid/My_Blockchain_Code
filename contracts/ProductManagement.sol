@@ -44,8 +44,8 @@ contract productManagement {
 
     //Functions to Manage Products
     function addProduct (uint8 _id, string memory _name, uint8 _price, uint8 _quantity) public {
-        require(_price > 0, "Price must be greater than 0");
-        require(_quantity > 0, "Quantity must be greater than 0");
+        require(_price > 0, "Price should be greater than 0");
+        require(_quantity > 0, "Quantity should be greater than 0");
         require(products[_id].isExist == false, "Product already exist");
 
         products[_id] = product(_id, _name, _price, _quantity, true, false);
@@ -95,7 +95,7 @@ contract productManagement {
     //Function to Remove Product from Sale
     function removeFromSale (uint8 _id) public onlyOwner {
         require(products[_id].isExist == true, "Product does not exist");
-        require(products[_id].onSale == true, "Product is not on sale");
+        require(products[_id].onSale == true, "Product is not put on sale");
 
         products[_id].onSale = false;
         emit productUpdated(_id, products[_id].name, products[_id].price, products[_id].quantity, products[_id].onSale);
