@@ -17,6 +17,7 @@ contract PowerUp is ERC721, ERC721URIStorage, Ownable {
 //Constructor of the Smart Contract
     constructor() ERC721("MyNFTs", "NFT") {}
 
+//Function to mint the NFTs with a Custom URI
     function safeMint(address to, string memory uri) public payable{
         require(_powerUps[msg.sender] <= 5, "You can only mint upto 5 times");
         require(msg.value == 0, "You can only mint with 0.00 value");
