@@ -41,14 +41,14 @@ contract NFTMarket {
     mapping(address => rented) public rentedNFTs;
 
     function saleNFT (uint256 price, uint256 tokenId) public {
-        require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Given Token");
+        require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Token You have Provided");
         require (token.isApprovedForAll(msg.sender, address(this)));
 
         listings[tokenId] = listing(price, msg.sender);
     }
 
     function saleNftERC20 (uint256 price, uint256 tokenId, address contractadd) public {
-        require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Given Token");
+        require (token.balanceOf(msg.sender, tokenId) > 0, "You Dont Own the Token You have Provided");
         require (token.isApprovedForAll(msg.sender, address(this)));
         require (ERC20.approve(address(this), price));
 
