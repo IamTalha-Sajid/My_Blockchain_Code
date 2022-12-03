@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 
 describe("MyToken contract", function () {
-  it("Should set the Destination Wallet Address", async function () {
+  it("Should set the Destination Wallet Address to the given address", async function () {
 
     const productManagement = await ethers.getContractFactory("productManagement");
 
@@ -11,7 +11,7 @@ describe("MyToken contract", function () {
     expect(await hardhatToken.getDestinationWallet()).to.equal("0x0000000000000000000000000000000000000000");
   });
 
-  it("Should set the USDT Token Wallet Address", async function () {
+  it("Should set the USDT Token Wallet Address which will stored", async function () {
 
     const productManagement = await ethers.getContractFactory("productManagement");
 
