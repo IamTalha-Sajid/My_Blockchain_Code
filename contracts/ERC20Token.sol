@@ -11,6 +11,7 @@ contract MyToken is ERC20, ERC20Burnable, Ownable {
         _mint(msg.sender, 1000 * 10 ** decimals());
     }
 
+    //Function to mint tokens
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
