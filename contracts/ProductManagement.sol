@@ -110,9 +110,13 @@ contract productManagement {
         require(token.balanceOf(msg.sender) >= (products[_id].price * _quantity), "Insuficient USDT Funds");
         require(token.allowance(msg.sender, address(this)) >= (products[_id].price * _quantity), "USDT Tokens not Approved to the Smart Contract");
 
+        //Transferring Tokens from the Wallet
         token.transferFrom(msg.sender, destinationWallet, products[_id].price * _quantity);
+        // emiting an event
         emit productBought(_id, _quantity);
+        //Quantity change occurs
         products[_id].quantity -= _quantity;
+        // emiting an event
         emit productUpdated(_id, products[_id].name, products[_id].price, products[_id].quantity, products[_id].onSale);
 
         //Removing Product from Sale if Quantity is 0
